@@ -16,6 +16,8 @@ Cài Docker Desktop (Windows/macOS) hoặc Docker Engine + Compose plugin (Linux
 
 Trong VS Code, mở thư mục `HRM_Docker_Project`. Tạo file `.env` bằng cách sao chép `.env.example`, rồi thay mọi giá trị `replace_with_...` bằng mật khẩu riêng, ngẫu nhiên, tối thiểu 32 ký tự chữ và số. Không commit `.env` lên GitHub. Compose từ chối khởi chạy nếu thiếu các giá trị bắt buộc.
 
+Trước lần chạy đầu, mở PowerShell tại thư mục dự án và chạy `.\pgadmin\configure-pgpass.ps1`. Script tạo file `.pgpass` local bị Git ignore, giới hạn quyền file trong volume pgAdmin, đăng ký server và khởi động pgAdmin/PostgreSQL; sau đó chạy `docker compose up -d --build` để khởi chạy toàn bộ stack. Chạy lại script nếu thay đổi `DB_PASSWORD`.
+
 `HTTP_PORT` mặc định là `8080`; nếu cổng đó đã được ứng dụng khác sử dụng, đổi thành cổng trống (ví dụ `8082`) trong `.env`. Các URL dưới đây dùng cổng mặc định.
 
 PostgreSQL khởi tạo bằng tài khoản quản trị `hrm_admin`; ứng dụng dùng tài khoản hạn chế `hrm_app`, còn PostgreSQL Exporter dùng tài khoản chỉ có quyền giám sát `hrm_monitor`. pgAdmin kết nối bằng `hrm_app` để xem/sửa dữ liệu ứng dụng; không dùng tài khoản quản trị trong ứng dụng.
@@ -43,7 +45,7 @@ Lần đầu tải image có thể mất vài phút.
 Grafana đăng nhập bằng `GRAFANA_USER` / `GRAFANA_PASSWORD` trong `.env`. pgAdmin dùng `PGADMIN_EMAIL` / `PGADMIN_PASSWORD`.
 
 ### Kết nối pgAdmin tới PostgreSQL
-Server **HRM PostgreSQL** được đăng ký tự động từ `pgadmin/servers.json`. Mở **Servers → HRM PostgreSQL** trong Object Explorer; khi được hỏi mật khẩu, nhập giá trị `DB_PASSWORD` trong `.env` và chọn lưu nếu muốn pgAdmin ghi nhớ trong hồ sơ cá nhân.
+Server **HRM PostgreSQL** được đăng ký tự động từ `pgadmin/servers.json`. Mở **Servers → HRM PostgreSQL** trong Object Explorer; kết nối dùng passfile riêng có quyền `0600`, vì vậy pgAdmin không hỏi mật khẩu database.
 
 Thông số kết nối: host `db`, port `5432`, database `hrm`, user `hrm_app`. Tài khoản ứng dụng chỉ có quyền thao tác dữ liệu HRM, không phải PostgreSQL superuser.
 

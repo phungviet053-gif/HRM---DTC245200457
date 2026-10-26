@@ -1,4 +1,5 @@
 .env
+pgadmin/.pgpass
 node_modules/
 .DS_Store
 *.log

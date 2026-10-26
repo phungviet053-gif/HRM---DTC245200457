@@ -8,6 +8,9 @@
       "MaintenanceDB": "hrm",
       "Username": "hrm_app",
       "SSLMode": "prefer",
+      "ConnectionParameters": {
+        "passfile": "/var/lib/pgadmin/.pgpass"
+      },
       "ConnectNow": true
     }
   }
