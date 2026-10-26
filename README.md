@@ -61,7 +61,7 @@ Trong pgAdmin chọn **Add New Server**:
 
 ## 6. Giám sát Prometheus + Grafana
 Trong Prometheus, vào **Status → Targets**; các target chính gồm `prometheus`, `cadvisor`, `node-exporter`, `postgres`. Một số target cần chờ vài chu kỳ scrape mới hiện trạng thái UP.
-Trong Grafana, datasource Prometheus và Loki được provision tự động. Prometheus scrape Nginx Exporter (metrics web server), cAdvisor, Node Exporter và PostgreSQL Exporter. Có thể tạo dashboard mới và thêm panel bằng các truy vấn ví dụ:
+Trong Grafana, datasource Prometheus và Loki cùng dashboard **HRM - Tổng quan hệ thống** được provision tự động. Mở **Dashboards → HRM → HRM - Tổng quan hệ thống** để xem trạng thái target, PostgreSQL, kết nối Nginx, CPU host, CPU/bộ nhớ container và log ứng dụng Loki. Prometheus scrape Nginx Exporter (metrics web server), cAdvisor, Node Exporter và PostgreSQL Exporter. Có thể tạo dashboard mới và thêm panel bằng các truy vấn ví dụ:
 - `up`
 - `container_memory_usage_bytes`
 - `rate(container_cpu_usage_seconds_total[5m])`
