@@ -43,14 +43,9 @@ Lần đầu tải image có thể mất vài phút.
 Grafana đăng nhập bằng `GRAFANA_USER` / `GRAFANA_PASSWORD` trong `.env`. pgAdmin dùng `PGADMIN_EMAIL` / `PGADMIN_PASSWORD`.
 
 ### Kết nối pgAdmin tới PostgreSQL
-Trong pgAdmin chọn **Add New Server**:
-- General → Name: `HRM PostgreSQL`
-- Connection → Host name/address: `db`
-- Port: `5432`
-- Maintenance database: `hrm`
-- Username: `hrm_app`
-- Password: giá trị `DB_PASSWORD` trong `.env`
-- Save.
+Server **HRM PostgreSQL** được đăng ký tự động từ `pgadmin/servers.json`. Mở **Servers → HRM PostgreSQL** trong Object Explorer; khi được hỏi mật khẩu, nhập giá trị `DB_PASSWORD` trong `.env` và chọn lưu nếu muốn pgAdmin ghi nhớ trong hồ sơ cá nhân.
+
+Thông số kết nối: host `db`, port `5432`, database `hrm`, user `hrm_app`. Tài khoản ứng dụng chỉ có quyền thao tác dữ liệu HRM, không phải PostgreSQL superuser.
 
 ## 5. Chức năng HRM
 - Xem/thêm/sửa/xóa nhân viên; kiểm tra mã nhân viên và email không trùng.
