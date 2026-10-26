@@ -1,0 +1,40 @@
+\getenv app_password DB_PASSWORD
+\getenv monitor_password DB_MONITOR_PASSWORD
+
+CREATE ROLE hrm_app LOGIN PASSWORD :'app_password';
+CREATE ROLE hrm_monitor LOGIN PASSWORD :'monitor_password';
+GRANT pg_monitor TO hrm_monitor;
+
+CREATE TABLE IF NOT EXISTS departments (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) UNIQUE NOT NULL,
+  description VARCHAR(250) DEFAULT ''
+);
+CREATE TABLE IF NOT EXISTS employees (
+  id SERIAL PRIMARY KEY,
+  employee_code VARCHAR(30) UNIQUE NOT NULL,
+  full_name VARCHAR(120) NOT NULL,
+  email VARCHAR(150) UNIQUE,
+  phone VARCHAR(30),
+  position VARCHAR(100),
+  department_id INTEGER REFERENCES departments(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE TABLE IF NOT EXISTS attendance (
+  id SERIAL PRIMARY KEY,
+  employee_id INTEGER NOT NULL REFERENCES employees(id) ON DELETE CASCADE,
+  work_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  check_in TIME,
+  check_out TIME,
+  note VARCHAR(250),
+  UNIQUE(employee_id, work_date)
+);
+
+GRANT CONNECT ON DATABASE hrm TO hrm_app, hrm_monitor;
+GRANT USAGE ON SCHEMA public TO hrm_app;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO hrm_app;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO hrm_app;
+ALTER DEFAULT PRIVILEGES FOR ROLE hrm_admin IN SCHEMA public
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO hrm_app;
+ALTER DEFAULT PRIVILEGES FOR ROLE hrm_admin IN SCHEMA public
+  GRANT USAGE, SELECT ON SEQUENCES TO hrm_app;
